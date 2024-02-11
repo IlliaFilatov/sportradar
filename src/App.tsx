@@ -1,25 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { GlobalContextProvider } from 'AppContext';
+import { Summary } from 'components/Summary/Summary';
+import { Scoreboard } from 'components/Scoreboard/Scoreboard';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GlobalContextProvider>
+      <div className='App'>
+        <Scoreboard />
+        <Summary />
+      </div>
+    </GlobalContextProvider>
   );
 }
 
