@@ -14,6 +14,24 @@ const setup = () => {
   );
 };
 
+const ScoreUpdaterComponent: React.FC = () => {
+  const { dispatch } = useGlobalContext();
+  dispatch({
+    type: 'UPDATE_SCORE',
+    matchId: `match${team1}${team2}`,
+    newHomeScore: 2,
+    newAwayScore: 2,
+  });
+  dispatch({
+    type: 'UPDATE_SCORE',
+    matchId: `match${team3}${team4}`,
+    newHomeScore: 1,
+    newAwayScore: 1,
+  });
+
+  return <></>;
+};
+
 const team1 = 'TeamA';
 const team2 = 'TeamB';
 const team3 = 'TeamC';
@@ -47,33 +65,25 @@ describe('Summary Component', () => {
   });
 
   it('displays the correct number of games', () => {
-    const matches = screen.getAllByTestId(/^match/);
+    const matches = screen.getAllByTestId(/^matchSummary/);
     expect(matches.length).toBe(3);
   });
 
   it('orders correctly when total scores are the same', () => {
-    const matches = screen.getAllByTestId(/^match/);
+    const matches = screen.getAllByTestId(/^matchSummary/);
     expect(matches[0]).toHaveTextContent(getMatchName(team5, team6));
     expect(matches[1]).toHaveTextContent(getMatchName(team3, team4));
     expect(matches[2]).toHaveTextContent(getMatchName(team1, team2));
   });
 
   it('orders by total score when scores are different', () => {
-    const { dispatch } = useGlobalContext();
-    dispatch({
-      type: 'UPDATE_SCORE',
-      matchId: `match${team1}${team2}`,
-      newHomeScore: 2,
-      newAwayScore: 2,
-    });
-    dispatch({
-      type: 'UPDATE_SCORE',
-      matchId: `match${team3}${team4}`,
-      newHomeScore: 1,
-      newAwayScore: 1,
-    });
+    render(
+      <GlobalContextProvider>
+        <ScoreUpdaterComponent />
+      </GlobalContextProvider>,
+    );
 
-    const matches = screen.getAllByTestId(/^match/);
+    const matches = screen.getAllByTestId(/^matchSummary/);
     expect(matches[0]).toHaveTextContent(getMatchName(team1, team2));
     expect(matches[1]).toHaveTextContent(getMatchName(team3, team4));
     expect(matches[2]).toHaveTextContent(getMatchName(team5, team6));
