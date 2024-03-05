@@ -1,15 +1,30 @@
 import { createContext, useContext, useReducer, ReactNode, Dispatch } from 'react';
 
+export type eventType = 'goal' | 'redCard' | 'yellowCard';
 export interface Match {
   id: string;
   homeTeam: string;
   awayTeam: string;
   homeScore: number;
   awayScore: number;
+  startTimestamp: Date;
+  events: Array<{
+    timestamp: Date;
+    event: eventType;
+    playerName: string;
+  }>;
 }
 
 type Action =
-  | { type: 'UPDATE_SCORE'; matchId: string; newHomeScore: number; newAwayScore: number }
+  | {
+      type: 'UPDATE_SCORE';
+      matchId: string;
+      newHomeScore: number;
+      newAwayScore: number;
+      playerName: string;
+    }
+  | { type: 'RED_CARD'; matchId: string; playerName: string }
+  | { type: 'YELLOW_CARD'; matchId: string; playerName: string }
   | { type: 'ADD_MATCH'; match: Match }
   | { type: 'DELETE_MATCH'; matchId: string };
 
@@ -33,7 +48,57 @@ const globalReducer = (state: GlobalState, action: Action): GlobalState => {
         ...state,
         matches: state.matches.map((match) =>
           match.id === action.matchId
-            ? { ...match, homeScore: action.newHomeScore, awayScore: action.newAwayScore }
+            ? {
+                ...match,
+                homeScore: action.newHomeScore,
+                awayScore: action.newAwayScore,
+                events: [
+                  ...match.events,
+                  {
+                    timestamp: new Date(),
+                    playerName: action.playerName,
+                    event: 'goal',
+                  },
+                ],
+              }
+            : match,
+        ),
+      };
+    case 'RED_CARD':
+      return {
+        ...state,
+        matches: state.matches.map((match) =>
+          match.id === action.matchId
+            ? {
+                ...match,
+                events: [
+                  ...match.events,
+                  {
+                    timestamp: new Date(),
+                    playerName: action.playerName,
+                    event: 'redCard',
+                  },
+                ],
+              }
+            : match,
+        ),
+      };
+    case 'YELLOW_CARD':
+      return {
+        ...state,
+        matches: state.matches.map((match) =>
+          match.id === action.matchId
+            ? {
+                ...match,
+                events: [
+                  ...match.events,
+                  {
+                    timestamp: new Date(),
+                    playerName: action.playerName,
+                    event: 'yellowCard',
+                  },
+                ],
+              }
             : match,
         ),
       };

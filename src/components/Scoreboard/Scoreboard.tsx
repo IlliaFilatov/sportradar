@@ -17,6 +17,8 @@ export const Scoreboard = () => {
       awayTeam: newAwayTeam,
       homeScore: 0,
       awayScore: 0,
+      startTimestamp: new Date(),
+      events: [],
     };
 
     dispatch({ type: 'ADD_MATCH', match: newMatch });

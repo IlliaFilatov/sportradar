@@ -16,18 +16,18 @@ const setup = () => {
 
 const ScoreUpdaterComponent: React.FC = () => {
   const { dispatch } = useGlobalContext();
-  dispatch({
-    type: 'UPDATE_SCORE',
-    matchId: `match${team1}${team2}`,
-    newHomeScore: 2,
-    newAwayScore: 2,
-  });
-  dispatch({
-    type: 'UPDATE_SCORE',
-    matchId: `match${team3}${team4}`,
-    newHomeScore: 1,
-    newAwayScore: 1,
-  });
+  // dispatch({
+  //   type: 'UPDATE_SCORE',
+  //   matchId: `match${team1}${team2}`,
+  //   newHomeScore: 2,
+  //   newAwayScore: 2,
+  // });
+  // dispatch({
+  //   type: 'UPDATE_SCORE',
+  //   matchId: `match${team3}${team4}`,
+  //   newHomeScore: 1,
+  //   newAwayScore: 1,
+  // });
 
   return <></>;
 };
